@@ -31,7 +31,7 @@ struct ContentView: View {
                 Spacer()
                 Text("Guess the Flag")
                     .font(.largeTitle.weight(.bold))
-                            .foregroundColor(.white)
+                    .foregroundColor(.white)
                 VStack(spacing: 15) {
                     
                     VStack {
@@ -48,12 +48,7 @@ struct ContentView: View {
                             tappedAnswer = number
                             flagTapped(number)
                         } label: {
-                            Image(countries[number])
-                            //tells SwiftUI to render the original image pixels
-                            //rather than trying to recolor them as a button
-                                .renderingMode(.original)
-                                .clipShape(Capsule())
-                                .shadow(radius: 5)
+                            FlagImage(number: number, country: $countries[number])
                         }
                     }
                 }
@@ -110,10 +105,45 @@ struct ContentView: View {
         questionsRemaining = 8
         askQuestion()
     }
+    
+    // challenge from p.3
+    struct FlagImage : View {
+        let number: Int
+        @Binding var country: String
+        var body: some View {
+            Image(country)
+            //tells SwiftUI to render the original image pixels
+            //rather than trying to recolor them as a button
+                .renderingMode(.original)
+                .clipShape(Capsule())
+                .shadow(radius: 5)
+        }
+    }
 }
+
+// challenge from p.3
+struct BigBlueTitle: ViewModifier {
+    
+    func body(content: Content) -> some View {
+            content
+                .font(.largeTitle)
+                .foregroundColor(.blue)
+                .padding()
+        }
+}
+
+extension View {
+    func bigBlueTitle() -> some View {
+            modifier(BigBlueTitle())
+        }
+}
+
+
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
     }
 }
+
+
